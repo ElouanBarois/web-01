@@ -10,14 +10,15 @@
           outlet.removeChild(outlet.lastChild);
       }
       outlet.appendChild(template);
-  // ...
-  })();
+      }
+      // ...
 
   /**
    * Create a new router. This router will load components into the given outlet.
    * @param {HTMLElement} outlet The element to put components into.
    */
-  export function Router(outlet) {
+  // TODO #export-router: export this function
+  function Router(outlet) {
     this._components = {};
     this._templates = {};
     this._outlet = outlet;
@@ -29,6 +30,8 @@
       this._onLocationChanged(event.newURL)
     );
   }
+  // TODO #export-router: remove this assignation
+  window.Router = Router;
 
   /**
    * Bind a component ot be displayed when the registered URL is reached.
