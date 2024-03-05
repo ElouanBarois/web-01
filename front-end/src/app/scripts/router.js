@@ -10,8 +10,6 @@
       }
       outlet.appendChild(template);
       }
-      // ...
-
   /**
    * Create a new router. This router will load components into the given outlet.
    * @param {HTMLElement} outlet The element to put components into.
@@ -28,8 +26,6 @@
       this._onLocationChanged(event.newURL)
     );
   }
-  // TODO #export-router: remove this assignation
-  window.Router = Router;
 
   /**
    * Bind a component ot be displayed when the registered URL is reached.
