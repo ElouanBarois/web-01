@@ -1,12 +1,12 @@
 export function parseUrl(url = window.location.href) {
-  var query = url.split("?")[1] || "";
-  var result = {};
+  let query = url.split("?")[1] || "";
+  let result = {};
 
-  var parts = query.split("&");
+  let parts = query.split("&");
   // TODO #functional-programming: Use Array.map() & Array.reduce()
-  for (var i in parts) {
-    var item = parts[i];
-    var kv = item.split("=");
+  for (let i in parts) {
+    let item = parts[i];
+    let kv = item.split("=");
     result[kv[0]] = kv[1];
   }
 
