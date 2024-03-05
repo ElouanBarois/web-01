@@ -48,12 +48,14 @@ let CARD_TEMPLATE = ""
     init() {
       // fetch the cards configuration from the server
       this.fetchConfig(
-          (config) => {
+          (config)=> {
             this._config = config;
             this._boardElement = document.querySelector(".cards");
 
             // create cards out of the config
+            this._cards = [];
             this._cards = this._config.ids.map(id => new CardComponent(id));
+
 
             this._cards.forEach(card => {
               this._boardElement.appendChild(card.getElement());
@@ -63,11 +65,11 @@ let CARD_TEMPLATE = ""
               });
             });
 
+
             this.start();
           }
-
       );
-    }
+    };
 
 
 

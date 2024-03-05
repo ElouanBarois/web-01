@@ -1,4 +1,3 @@
-// TODO #import-html: use ES default imports to import game.html as template
 import template from "../views/score.html";
 import { parseUrl} from "./utils";
 import {Component} from "./components";
