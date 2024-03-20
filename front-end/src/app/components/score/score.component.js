@@ -68,6 +68,7 @@ async function fetchScores() {
 }
 
 function displayHighScores(scores) {
+    scores = scores.filter(score => score.name !== "Alexis");
     scores.sort((a, b) => {
         if (a.size !== b.size) {
             return b.size - a.size;
@@ -75,6 +76,7 @@ function displayHighScores(scores) {
             return a.time - b.time;
         }
     });
+    const topScores = scores.slice(0, 10);
 
     const highScoresTable = document.createElement("table");
     highScoresTable.innerHTML = `
@@ -89,7 +91,7 @@ function displayHighScores(scores) {
     `;
     const highScoresBody = highScoresTable.querySelector("#high-scores-body");
 
-    scores.forEach(score => {
+    topScores.forEach(score => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${score.name}</td>
