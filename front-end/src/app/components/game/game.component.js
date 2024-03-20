@@ -24,7 +24,7 @@ import * as localforage from "localforage/dist/localforage";
 
     }
 
-    /*async init() {
+    async init() {
             this._config = await this.fetchConfig();
             this._boardElement = document.querySelector(".cards");
             this._cards = [];
@@ -37,29 +37,8 @@ import * as localforage from "localforage/dist/localforage";
             });
             this.start();
           }
-         */
-      async init() {
-          try {
-              const gameState = await localforage.getItem("gameState");
-              if (gameState) {
-                  this._size = gameState.size;
-                  this._cards = gameState.cards.map(cardState => new CardComponent(cardState.id, cardState.flipped, cardState.matched));
-              } else {
-                  this._config = await this.fetchConfig();
-                  this._boardElement = document.querySelector(".cards");
-                  this._cards = this._config.ids.map(id => new CardComponent(id));
-                  this._cards.forEach(card => {
-                      this._boardElement.appendChild(card.getElement());
-                      card.getElement().addEventListener("click", () => {
-                          this._flipCard(card);
-                      });
-                  });
-                  this.start();
-              }
-          } catch (error) {
-              console.error("Error while initializing game:", error);
-          }
-      }
+
+
 
     start() {
       this._startTime = Date.now();
@@ -84,22 +63,6 @@ import * as localforage from "localforage/dist/localforage";
           (r) => r.json()
       );
     }
-      async saveGameState() {
-          try {
-              const cardStates = this._cards.map(card => ({
-                  id: card.id,
-                  flipped: card.flipped,
-                  matched: card.matched
-              }));
-              const gameState = {
-                  size: this._size,
-                  cards: cardStates
-              };
-              await localforage.setItem("gameState", gameState);
-          } catch (error) {
-              console.error("Error while saving game state:", error);
-          }
-      }
 
     goToScore() {
       let timeElapsedInSeconds = Math.floor(

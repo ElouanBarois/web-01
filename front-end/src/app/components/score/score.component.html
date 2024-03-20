@@ -12,12 +12,18 @@
                     <p class="time"><span id="time"></span>s</p>
                 </div>
             </div>
+            <div>
+                <h3>High Scores</h3>
+                <ul id="high-scores"></ul>
+            </div>
         </main>
     </div>
 
 </section>
+<script src="score.component.js"></script>
 <script>
-    new ScoreComponent().init();
+    const scoreComponent = new ScoreComponent();
+    new scoreComponent().init();
 </script>
 </body>
 
