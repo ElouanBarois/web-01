@@ -2,7 +2,8 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "colors": "^1.4.0",
-    "core-js": "^3.36.0"
+    "core-js": "^3.36.0",
+    "localforage": "^1.10.0"
   },
   "name": "elouan-meme-ory",
   "version": "1.0.0",

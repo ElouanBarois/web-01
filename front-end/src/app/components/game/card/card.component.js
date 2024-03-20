@@ -45,7 +45,9 @@ export class CardComponent extends Component {
         this._imageElt.querySelector("img.front-face").src =
             CARDS_IMAGE[this._id + 1];
         this._imageElt.querySelector("img.back-face").src = CARDS_IMAGE[0];
-
+        if (this._flipped) {
+            this.flip();
+        }
     }
     getElement() {
         return this._elt;
@@ -59,6 +61,9 @@ export class CardComponent extends Component {
     };
     get flipped() {
         return this._flipped;
+    }
+    get id() {
+        return this._id;
     }
 
 }
