@@ -3,7 +3,6 @@ export const config = {
     port: 8081,
     swagger: {
         swaggerDefinition: {
-            // Like the one described here: https://swagger.io/specification/#infoObject
             info: {
                 title: 'Meme-ory',
                 version: '1.0.0',

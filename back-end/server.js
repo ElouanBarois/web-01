@@ -13,19 +13,17 @@ import swaggerJSDoc from 'swagger-jsdoc';
 const app = express();
 
 swaggerJSDoc(config.swagger)
-.then(specs => app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs)))
+    .then(specs => app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs)))
 
 const scores = [];
 
-// populate scores with random scores
 scores.push({name: 'Alexis', time: _.random(999, true), size: _.random(0, 12)});
 scores.push({name: 'Nicolas', time: _.random(999, true), size: _.random(0, 12)});
 
-// used to parse body request
 app.use(express.json())
 
 app.use(cors({
-   origin: "*"
+    origin: "*"
 }));
 
 /**
@@ -123,7 +121,6 @@ app.post('/scores', (req, res) => {
 });
 
 
-
 /**
  * @swagger
  * /scores:
@@ -173,10 +170,9 @@ app.get('/scores', (req, res) => {
 });
 
 
-
 app.listen(config.port, () => {
     console.log(chalk.bold.green(
-`*****************
+        `*****************
 Meme-ory app started up!
 *****************
 `));
