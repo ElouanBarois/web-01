@@ -1,26 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>MÈME ory</title>
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="/src/app/styles/style.css" />
-    <!-- TODO #card-component: add link to a new './card/card.component.css' file -->
-      <link rel="stylesheet" href="./card/card.component.css" />
-    <!-- link to game controller -->
-    <script src="../../scripts/utils.js"></script>
-  </head>
+<body>
+<main class="game-cmp">
+    <div class="cards"></div>
+</main>
+<script>
 
-  <body>
-        <!-- TODO #shell: keep this element -->
-        <main class="game-cmp">
-          <div class="cards"></div>
-        </main>
-    <script>
-
-      (function () {
+    (function () {
         new GameComponent().init();
-      })();
-    </script>
-  </body>
-</html>
+    })();
+</script>
+</body>

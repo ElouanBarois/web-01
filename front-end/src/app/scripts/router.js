@@ -1,136 +1,134 @@
+/**
+ * Append an html template to the document, at the given outlet.
+ * @param HTMLElement outlet the location on the document to add the template
+ * @param HTMLElement template the template to append
+ */
+function renderTemplate(outlet, template) {
+    while (outlet.lastChild) {
+        outlet.removeChild(outlet.lastChild);
+    }
+    outlet.appendChild(template);
+}
 
-  /**
-   * Append an html template to the document, at the given outlet.
-   * @param HTMLElement outlet the location on the document to add the template
-   * @param HTMLElement template the template to append
-   */
-  function renderTemplate(outlet, template) {
-          while (outlet.lastChild) {
-          outlet.removeChild(outlet.lastChild);
-      }
-      outlet.appendChild(template);
-      }
-  /**
-   * Create a new router. This router will load components into the given outlet.
-   * @param {HTMLElement} outlet The element to put components into.
-   */
-  export function Router(outlet) {
+/**
+ * Create a new router. This router will load components into the given outlet.
+ * @param {HTMLElement} outlet The element to put components into.
+ */
+export function Router(outlet) {
     this._components = {};
     this._templates = {};
     this._outlet = outlet;
 
     window.addEventListener("beforeunload", (event) =>
-      this._onLocationChanged()
+        this._onLocationChanged()
     );
     window.addEventListener("hashchange", (event) =>
-      this._onLocationChanged(event.newURL)
+        this._onLocationChanged(event.newURL)
     );
-  }
+}
 
-  /**
-   * Bind a component ot be displayed when the registered URL is reached.
-   * @param hash
-   * @param componentEntry
-   * @returns {Router}
-   */
-  Router.prototype.register = function (hash, componentEntry) {
+/**
+ * Bind a component ot be displayed when the registered URL is reached.
+ * @param hash
+ * @param componentEntry
+ * @returns {Router}
+ */
+Router.prototype.register = function (hash, componentEntry) {
     let path = `#${hash}`;
     if (!componentEntry) {
-      throw new TypeError(
-        `provided arg should be a Component. Got: ${componentEntry}`
-      );
+        throw new TypeError(
+            `provided arg should be a Component. Got: ${componentEntry}`
+        );
     }
 
     if (typeof hash !== "string") {
-      throw new TypeError(
-        `provided route url should be a string. Got: ${hash}`
-      );
+        throw new TypeError(
+            `provided route url should be a string. Got: ${hash}`
+        );
     } else {
-      this._components[path] = componentEntry;
+        this._components[path] = componentEntry;
     }
 
     if (componentEntry.templateUrl) {
-      if (!this._templates[componentEntry.templateUrl]) {
-        this._templates[componentEntry.templateUrl] = true;
-        let _this = this;
-        _fetchTemplate(componentEntry.templateUrl, function (template) {
-          componentEntry.template = template;
-          if (_getRouteHash(window.location.href) === path) {
+        if (!this._templates[componentEntry.templateUrl]) {
+            this._templates[componentEntry.templateUrl] = true;
+            let _this = this;
+            _fetchTemplate(componentEntry.templateUrl, function (template) {
+                componentEntry.template = template;
+                if (_getRouteHash(window.location.href) === path) {
+                    _this._renderComponent(_this._components[path]);
+                }
+            });
+        } else if (_getRouteHash(window.location.href) === path) {
             _this._renderComponent(_this._components[path]);
-          }
-        });
-      } else if (_getRouteHash(window.location.href) === path) {
-        _this._renderComponent(_this._components[path]);
-      }
+        }
     } else {
-      if (_getRouteHash(window.location.href) === path) {
-        this._renderComponent(this._components[path]);
-      }
+        if (_getRouteHash(window.location.href) === path) {
+            this._renderComponent(this._components[path]);
+        }
     }
 
     return this;
-  };
+};
 
-  Router.prototype._renderComponent = function (componentEntry) {
+Router.prototype._renderComponent = function (componentEntry) {
     let component = new componentEntry.component();
 
     let outlet = this._outlet;
 
     let element = document.createElement("template");
     element.innerHTML =
-      componentEntry.template ||
-      component.template ||
-      (component.getTemplate && component.getTemplate());
+        componentEntry.template ||
+        component.template ||
+        (component.getTemplate && component.getTemplate());
 
     renderTemplate(outlet, element.content.cloneNode(true));
     if (typeof component.init === "function") {
-      component.init();
+        component.init();
     }
-  };
+};
 
-  Router.prototype._onLocationChanged = function (loc) {
+Router.prototype._onLocationChanged = function (loc) {
     if (!loc) {
-      return;
+        return;
     }
 
     let path = _getRouteHash(loc);
     let componentEntry = this._components[path];
 
     if (componentEntry) {
-      this._renderComponent(componentEntry);
+        this._renderComponent(componentEntry);
     } else if (loc.startsWith(window.location.origin)) {
-      console.warn(
-        `navigated to "${loc}, but no component was registered at this address"`
-      );
+        console.warn(
+            `navigated to "${loc}, but no component was registered at this address"`
+        );
     }
-  };
+};
 
-  function _getRouteHash(url) {
+function _getRouteHash(url) {
     return new URL(url).hash.split("?")[0] || "#";
-  }
+}
 
-  function _fetchTemplate(templateUrl, cb) {
+function _fetchTemplate(templateUrl, cb) {
     let xhr =
-      typeof XMLHttpRequest != "undefined"
-        ? new XMLHttpRequest()
-        : new ActiveXObject("Microsoft.XMLHTTP");
+        typeof XMLHttpRequest != "undefined"
+            ? new XMLHttpRequest()
+            : new ActiveXObject("Microsoft.XMLHTTP");
 
     xhr.open("get", templateUrl, true);
-
     xhr.onreadystatechange = function () {
-      let status;
-      let data;
-      // https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
-      if (xhr.readyState == 4) {
-        // `DONE`
-        status = xhr.status;
-        if (status == 200) {
-          data = xhr.responseText;
-          cb(data);
-        } else {
-          throw new Error(status);
+        let status;
+        let data;
+        if (xhr.readyState == 4) {
+            // `DONE`
+            status = xhr.status;
+            if (status == 200) {
+                data = xhr.responseText;
+                cb(data);
+            } else {
+                throw new Error(status);
+            }
         }
-      }
     };
     xhr.send();
-  }
+}

@@ -1,9 +1,9 @@
-
 import {parseUrl} from "../../scripts/utils";
 import template from "./game.component.html";
 import "./game.component.css";
 import {Component} from "../../scripts/components";
 import { CardComponent } from "./card/card.component";
+import * as localforage from "localforage/dist/localforage";
 
   let environment = {
     api: {
@@ -16,7 +16,6 @@ import { CardComponent } from "./card/card.component";
     constructor() {
       super(template);
 
-      // save player name & game size
       let params = parseUrl();
       this._name = params.name;
       this._size = parseInt(params.size) || 9;
@@ -84,23 +83,17 @@ import { CardComponent } from "./card/card.component";
         return;
       }
 
-      // flip the card
       card.flip();
 
-      // if flipped first card of the pair
       if (!this._flippedCard) {
-        // keep this card flipped and wait for the second card of the pair
         this._flippedCard = card;
       } else {
-        // second card of the pair flipped...
 
-        // if cards are the same
         if (card.equals(this._flippedCard)) {
           this._flippedCard.matched = true;
           card.matched = true;
           this._matchedPairs += 1;
 
-          // reset flipped card for the next turn.
           this._flippedCard = null;
 
           if (this._matchedPairs === this._size) {
@@ -109,15 +102,11 @@ import { CardComponent } from "./card/card.component";
         } else {
           this._busy = true;
 
-          // cards did not match
-          // wait a short amount of time before hiding both cards
           setTimeout( () =>{
-                // hide the cards
                 this._flippedCard.flip();
                 card.flip();
                 this._busy = false;
 
-                // reset flipped card for the next turn.
                 this._flippedCard = null;
               },
               500);
