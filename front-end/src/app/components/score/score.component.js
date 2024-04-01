@@ -68,7 +68,7 @@ async function fetchScores() {
 }
 
 function displayHighScores(scores) {
-    scores = scores.filter(score => score.name !== "Alexis");
+    scores = scores.filter(score => score.name !== "Alexis" && score.name !== "Nicolas");
     scores.sort((a, b) => {
         if (a.size !== b.size) {
             return b.size - a.size;

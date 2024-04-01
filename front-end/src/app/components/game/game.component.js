@@ -3,7 +3,6 @@ import template from "./game.component.html";
 import "./game.component.css";
 import {Component} from "../../scripts/components";
 import { CardComponent } from "./card/card.component";
-import * as localforage from "localforage/dist/localforage";
 
   let environment = {
     api: {
